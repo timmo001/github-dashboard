@@ -28,6 +28,7 @@ import {
 import { AuthenticationType, OAuth2 } from "lib/types/general";
 import { GitHub } from "lib/github";
 import {
+  Issue,
   Repository,
   RepositoryData,
   User,
@@ -244,16 +245,65 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
         )}
         <Grid
           item
-          xs={6}
+          xs={10}
           sx={{
             padding: theme.spacing(1, 2, 1, 4),
-            borderRight: "1px dashed #cccccc",
           }}>
           {repositoryData ? (
             <>
               <Typography component="h3" gutterBottom variant="h4">
                 {repositoryData.full_name}
               </Typography>
+
+              <Grid
+                container
+                direction="row"
+                alignContent="space-around"
+                justifyContent="space-around">
+                <Grid
+                  item
+                  xs={4}
+                  sx={{
+                    margin: theme.spacing(1, 0),
+                    padding: theme.spacing(0, 2),
+                  }}>
+                  <Typography variant="h4" noWrap>
+                    Discussions
+                  </Typography>
+                  <Typography variant="h5" noWrap>
+                    {repositoryData.discussion.total}
+                  </Typography>
+                </Grid>
+                <Grid
+                  item
+                  xs={4}
+                  sx={{
+                    margin: theme.spacing(1, 0),
+                    padding: theme.spacing(0, 2),
+                  }}>
+                  <Typography variant="h4" noWrap>
+                    Issues
+                  </Typography>
+                  <Typography variant="h5" noWrap>
+                    {repositoryData.issue.total}
+                  </Typography>
+                </Grid>
+                <Grid
+                  item
+                  xs={4}
+                  sx={{
+                    margin: theme.spacing(1, 0),
+                    padding: theme.spacing(0, 2),
+                  }}>
+                  <Typography variant="h4" noWrap>
+                    Pull Requests
+                  </Typography>
+                  <Typography variant="h5" noWrap>
+                    {repositoryData.pull_request.total}
+                  </Typography>
+                </Grid>
+              </Grid>
+
               {/* <div
                 style={{
                   width: "100%",
