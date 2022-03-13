@@ -1,0 +1,20 @@
+query Organization($organization: String!) {
+  rateLimit {
+    cost
+    remaining
+  }
+  organization(login: $organization) {
+    avatarUrl
+    login
+    name
+    url
+    repositories(first: 100, orderBy: { field: PUSHED_AT, direction: DESC }) {
+      nodes {
+        name
+        owner {
+          login
+        }
+      }
+    }
+  }
+}

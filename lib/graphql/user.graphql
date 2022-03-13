@@ -1,0 +1,23 @@
+query User($user: String!) {
+  rateLimit {
+    cost
+    remaining
+  }
+  user(login: $user) {
+    avatarUrl
+    login
+    name
+    url
+    followers {
+      totalCount
+    }
+    repositories(first: 100, orderBy: { field: PUSHED_AT, direction: DESC }) {
+      nodes {
+        name
+        owner {
+          login
+        }
+      }
+    }
+  }
+}
