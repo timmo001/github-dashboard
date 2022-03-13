@@ -58,24 +58,13 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
   const [authenticated, setAuthenticated] = useState<AuthenticationType>(0);
   const [authorizeUrl, setAuthorizeUrl] = useState<string>();
   const [repositoryData, setRepositoryData] = useRepository();
-  const [userData, setUserData] = useState<User>();
-  const [viewerData, setViewerData] = useViewer();
+  const [, setUserData] = useState<User>();
+  const [, setViewerData] = useViewer();
 
   const router = useRouter();
   const { code, state } = router.query as NodeJS.Dict<string>;
 
   useEffect(() => {
-    // const missingParameters: Array<string> = [];
-    // if (!owner || owner === "") missingParameters.push("Owner");
-    // if (!repository || repository === "") missingParameters.push("Repository");
-    // if (missingParameters.length > 0) {
-    //   setAlert(
-    //     `Missing required query parameter${
-    //       missingParameters.length > 1 ? "s" : ""
-    //     }: ${missingParameters.join(", ")}`
-    //   );
-    //   return;
-    // }
     setAlert(undefined);
     setAuthorizeUrl(undefined);
 
@@ -291,7 +280,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
               color="primary"
               variant="outlined"
               fullWidth
-              sx={{ marginBottom: theme.spacing(2) }}
+              sx={{ padding: theme.spacing(1), marginBottom: theme.spacing(2) }}
               onClick={() => {
                 router.push(authorizeUrl);
               }}>
@@ -305,7 +294,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
           item
           xs={10}
           sx={{
-            padding: theme.spacing(1, 2, 1, 4),
+            padding: theme.spacing(0),
           }}>
           {repositoryData ? (
             <>
