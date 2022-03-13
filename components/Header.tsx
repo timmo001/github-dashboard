@@ -1,5 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import React, { ReactElement, useEffect, useMemo, useState } from "react";
 import {
   AppBar,
   Drawer,
@@ -14,6 +13,7 @@ import { mdiMenu } from "@mdi/js";
 import Icon from "@mdi/react";
 import clsx from "clsx";
 
+import { useRepository } from "./Context/Repository";
 import useStyles from "assets/jss/components/header";
 
 type ColorExpanded = PropTypes.Color | "transparent";
@@ -35,9 +35,7 @@ interface HeaderProps {
 function Header(props: HeaderProps): ReactElement {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  const router = useRouter();
-  const { project } = router.query as NodeJS.Dict<string>;
+  const [repositoryData] = useRepository();
 
   useEffect(() => {
     if (props.changeColorOnScroll) {
@@ -50,11 +48,11 @@ function Header(props: HeaderProps): ReactElement {
     };
   }, []);
 
-  const handleDrawerToggle = () => {
+  function handleDrawerToggle(): void {
     setMobileOpen(!mobileOpen);
-  };
+  }
 
-  const headerColorChange = () => {
+  function headerColorChange(): void {
     const { color, changeColorOnScroll } = props;
     const windowsScrollTop = window.pageYOffset;
     if (windowsScrollTop > changeColorOnScroll.height) {
@@ -72,7 +70,7 @@ function Header(props: HeaderProps): ReactElement {
         .getElementsByTagName("header")[0]
         .classList.remove(classes[changeColorOnScroll.color]);
     }
-  };
+  }
 
   const { color, rightLinks, brand, fixed, absolute } = props;
 
@@ -89,12 +87,12 @@ function Header(props: HeaderProps): ReactElement {
       <Toolbar className={classes.container}>
         <Typography className={classes.title} component="div" variant="h4">
           {brand}
-        </Typography>
-        <Typography
-          component="span"
-          variant="h6"
-          sx={{ marginLeft: theme.spacing(2) }}>
-          {project}
+          <Typography
+            component="span"
+            variant="h6"
+            sx={{ marginLeft: theme.spacing(4) }}>
+            {repositoryData?.full_name}
+          </Typography>
         </Typography>
         <Hidden xlDown implementation="css">
           {rightLinks}

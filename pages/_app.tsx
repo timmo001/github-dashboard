@@ -15,6 +15,7 @@ import theme from "components/Theme";
 import "@fontsource/roboto";
 
 import "assets/css/style.css";
+import { RepositoryProvider } from "components/Context/Repository";
 
 declare module "@mui/styles/defaultTheme" {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -48,8 +49,12 @@ function App({ Component, pageProps }: AppProps): ReactElement {
             <>
               <ViewerProvider>
                 <>
-                  <CssBaseline />
-                  <Component {...pageProps} />
+                  <RepositoryProvider>
+                    <>
+                      <CssBaseline />
+                      <Component {...pageProps} />
+                    </>
+                  </RepositoryProvider>
                 </>
               </ViewerProvider>
             </>

@@ -38,6 +38,7 @@ import {
   ViewerData,
 } from "lib/types/github";
 import { useAuth } from "components/Context/Auth";
+import { useRepository } from "components/Context/Repository";
 import { useViewer } from "components/Context/Viewer";
 import graphqlRepository from "lib/graphql/repository.graphql";
 import graphqlUser from "lib/graphql/user.graphql";
@@ -56,7 +57,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
   const [alert, setAlert] = useState<string>();
   const [authenticated, setAuthenticated] = useState<AuthenticationType>(0);
   const [authorizeUrl, setAuthorizeUrl] = useState<string>();
-  const [repositoryData, setRepositoryData] = useState<Repository>();
+  const [repositoryData, setRepositoryData] = useRepository();
   const [userData, setUserData] = useState<User>();
   const [viewerData, setViewerData] = useViewer();
 
@@ -308,10 +309,6 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
           }}>
           {repositoryData ? (
             <>
-              <Typography component="h3" gutterBottom variant="h4">
-                {repositoryData.full_name}
-              </Typography>
-
               <Grid
                 container
                 direction="row"
