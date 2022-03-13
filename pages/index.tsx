@@ -265,7 +265,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     Discussions
                   </Typography>
                   <Typography variant="h5" noWrap>
-                    {repositoryData.discussion.total}
+                    {repositoryData.discussion?.total || 0}
                   </Typography>
                 </Grid>
                 <Grid item sx={{ padding: theme.spacing(1, 2) }}>
@@ -273,7 +273,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     Issues
                   </Typography>
                   <Typography variant="h5" noWrap>
-                    {repositoryData.issue.total}
+                    {repositoryData.issue?.total || 0}
                   </Typography>
                 </Grid>
                 <Grid item sx={{ padding: theme.spacing(1, 2) }}>
@@ -281,9 +281,32 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     Pull Requests
                   </Typography>
                   <Typography variant="h5" noWrap>
-                    {repositoryData.pull_request.total}
+                    {repositoryData.pull_request?.total || 0}
                   </Typography>
                 </Grid>
+                <Grid item sx={{ padding: theme.spacing(1, 2) }}>
+                  <Typography variant="h4" noWrap>
+                    Stargazers
+                  </Typography>
+                  <Typography variant="h5" noWrap>
+                    {repositoryData.stargazers_count || 0}
+                  </Typography>
+                </Grid>
+                <Grid item sx={{ padding: theme.spacing(1, 2) }}>
+                  <Typography variant="h4" noWrap>
+                    Watchers
+                  </Typography>
+                  <Typography variant="h5" noWrap>
+                    {repositoryData.watchers?.totalCount || 0}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                direction="row"
+                alignContent="space-around"
+                justifyContent="space-around"
+                sx={{ margin: theme.spacing(2, 0) }}>
                 {repositoryData.release?.name ||
                 repositoryData.refs?.tags[0]?.name ? (
                   <Grid item sx={{ padding: theme.spacing(1, 2) }}>
