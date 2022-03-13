@@ -36,6 +36,7 @@
     "@types/react-html-parser": "2.0.2",
     "@typescript-eslint/eslint-plugin": "5.14.0",
     "@typescript-eslint/parser": "5.14.0",
+    "eslint": "8.11.0",
     "prettier": "2.5.1",
     "raw-loader": "4.0.2",
     "typescript": "4.6.2"
