@@ -98,6 +98,11 @@ export interface Repository {
   watchers: Watchers;
 }
 
+export interface Author {
+  avatarUrl: string;
+  login: string;
+}
+
 export interface DefaultBranchRef {
   commit: Commit;
 }
@@ -119,9 +124,17 @@ export interface DiscussionElement {
   number: number;
 }
 
+export interface IssueElement {
+  title: string;
+  url: string;
+  number: number;
+  state: string;
+  author: Author;
+}
+
 export interface Issue {
   total: number;
-  issues: Array<DiscussionElement>;
+  issues: Array<IssueElement>;
 }
 
 export interface PrimaryLanguage {
@@ -132,7 +145,7 @@ export interface PrimaryLanguage {
 
 export interface PullRequest {
   total: number;
-  pull_requests: Array<DiscussionElement>;
+  pull_requests: Array<IssueElement>;
 }
 
 export interface Refs {
