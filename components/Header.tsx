@@ -90,7 +90,11 @@ function Header(props: HeaderProps): ReactElement {
           <Typography
             component="span"
             variant="h6"
-            sx={{ marginLeft: theme.spacing(4) }}>
+            sx={{
+              position: "absolute",
+              top: "calc(50% - 0.98rem)",
+              marginLeft: theme.spacing(4),
+            }}>
             {repositoryData?.full_name}
           </Typography>
         </Typography>
