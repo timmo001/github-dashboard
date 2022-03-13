@@ -51,14 +51,18 @@ function HeaderLinks(): ReactElement {
           ""
         )}
         <ListItem className={clsx(classes.listItem, classes.divider)} />
-        <ListItem className={classes.listItem}>
-          <Button
-            variant="outlined"
-            className={classes.navLink}
-            onClick={handleSetRepository}>
-            <span className={classes.listItemText}>Set Repository</span>
-          </Button>
-        </ListItem>
+        {viewerData ? (
+          <ListItem className={classes.listItem}>
+            <Button
+              variant="outlined"
+              className={classes.navLink}
+              onClick={handleSetRepository}>
+              <span className={classes.listItemText}>Set Repository</span>
+            </Button>
+          </ListItem>
+        ) : (
+          ""
+        )}
         <ListItem className={clsx(classes.listItem, classes.divider)} />
         <ListItem className={classes.listItem}>
           <Link
