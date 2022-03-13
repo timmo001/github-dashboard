@@ -300,6 +300,14 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     {repositoryData.watchers?.totalCount || 0}
                   </Typography>
                 </Grid>
+                <Grid item sx={{ padding: theme.spacing(1, 2) }}>
+                  <Typography variant="h4" noWrap>
+                    Forks
+                  </Typography>
+                  <Typography variant="h5" noWrap>
+                    {repositoryData.forks_count || 0}
+                  </Typography>
+                </Grid>
               </Grid>
               <Grid
                 container
