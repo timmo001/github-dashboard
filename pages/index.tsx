@@ -260,13 +260,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 direction="row"
                 alignContent="space-around"
                 justifyContent="space-around">
-                <Grid
-                  item
-                  xs={4}
-                  sx={{
-                    margin: theme.spacing(1, 0),
-                    padding: theme.spacing(0, 2),
-                  }}>
+                <Grid item xs={4} sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap>
                     Discussions
                   </Typography>
@@ -274,13 +268,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     {repositoryData.discussion.total}
                   </Typography>
                 </Grid>
-                <Grid
-                  item
-                  xs={4}
-                  sx={{
-                    margin: theme.spacing(1, 0),
-                    padding: theme.spacing(0, 2),
-                  }}>
+                <Grid item xs={4} sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap>
                     Issues
                   </Typography>
@@ -288,13 +276,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     {repositoryData.issue.total}
                   </Typography>
                 </Grid>
-                <Grid
-                  item
-                  xs={4}
-                  sx={{
-                    margin: theme.spacing(1, 0),
-                    padding: theme.spacing(0, 2),
-                  }}>
+                <Grid item xs={4} sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap>
                     Pull Requests
                   </Typography>
