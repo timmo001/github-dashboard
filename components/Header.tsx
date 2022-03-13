@@ -83,7 +83,8 @@ function Header(props: HeaderProps): ReactElement {
         [classes.absolute]: absolute,
         [classes.fixed]: fixed,
       })}
-      color={color}>
+      color={color}
+    >
       <Toolbar className={classes.container}>
         <Typography className={classes.title} component="div" variant="h4">
           {brand}
@@ -94,7 +95,8 @@ function Header(props: HeaderProps): ReactElement {
               position: "absolute",
               top: "calc(50% - 0.98rem)",
               marginLeft: theme.spacing(4),
-            }}>
+            }}
+          >
             {repositoryData?.full_name}
           </Typography>
         </Typography>
@@ -106,7 +108,8 @@ function Header(props: HeaderProps): ReactElement {
             color="inherit"
             aria-label="open drawer"
             size="large"
-            onClick={handleDrawerToggle}>
+            onClick={handleDrawerToggle}
+          >
             <Icon path={mdiMenu} size={1} />
           </IconButton>
         </Hidden>
@@ -119,7 +122,8 @@ function Header(props: HeaderProps): ReactElement {
           classes={{
             paper: classes.drawerPaper,
           }}
-          onClose={handleDrawerToggle}>
+          onClose={handleDrawerToggle}
+        >
           <div className={classes.appResponsive}>{rightLinks}</div>
         </Drawer>
       </Hidden>
