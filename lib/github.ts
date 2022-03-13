@@ -7,8 +7,6 @@ import { OAuth2 } from "./types/general";
 export class GitHub {
   auth: OAuth2;
 
-  constructor() {}
-
   async authenticate(
     baseUrl: string,
     code: string,

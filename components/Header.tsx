@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useMemo, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import {
   AppBar,
   Drawer,
@@ -10,6 +10,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { mdiMenu } from "@mdi/js";
+// eslint-disable-next-line import/no-default-export
 import Icon from "@mdi/react";
 import clsx from "clsx";
 
