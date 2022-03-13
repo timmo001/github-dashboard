@@ -44,6 +44,10 @@ query Repository($owner: String!, $repository: String!) {
         url
         number
         state
+        createdAt
+        updatedAt
+        closedAt
+        closed
         author {
           avatarUrl
           login
@@ -60,6 +64,10 @@ query Repository($owner: String!, $repository: String!) {
         url
         number
         state
+        createdAt
+        updatedAt
+        closedAt
+        closed
         author {
           avatarUrl
           login

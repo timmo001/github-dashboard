@@ -129,6 +129,10 @@ export interface IssueElement {
   url: string;
   number: number;
   state: string;
+  createdAt: Date;
+  updatedAt: Date;
+  closedAt: Date;
+  closed: boolean;
   author: Author;
 }
 

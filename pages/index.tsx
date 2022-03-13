@@ -15,6 +15,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import { cyan, green } from "@mui/material/colors";
 import {
   Legend,
   Line,
@@ -24,11 +25,12 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import moment from "moment";
 
 import { AuthenticationType, OAuth2 } from "lib/types/general";
 import { GitHub } from "lib/github";
 import {
-  Issue,
+  IssueElement,
   Repository,
   RepositoryData,
   User,
@@ -209,6 +211,61 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
       });
   }, [authenticated]);
 
+  const daysSince = useMemo<number>(() => {
+    const firstDate = moment().subtract(1, "month").startOf("month").toDate();
+    console.log("First date:", firstDate);
+
+    const daysSince = moment().diff(firstDate, "days");
+    console.log("Days since:", daysSince);
+
+    return daysSince;
+  }, []);
+
+  const issuesByDay = useMemo<Array<NodeJS.Dict<any>>>(() => {
+    if (!daysSince) return undefined;
+    if (!repositoryData) return undefined;
+    const issues = [];
+    for (let i = daysSince; i >= 0; i--) {
+      const date = moment().subtract(i, "days").startOf("day");
+      const dayIssues = {
+        date: date.format("Do MMM YYYY"),
+        Issues: repositoryData.issue.issues.filter((issue: IssueElement) =>
+          issue.closed
+            ? moment(issue.createdAt).startOf("day").isSameOrBefore(date) &&
+              moment(issue.closedAt).startOf("day").isSameOrAfter(date)
+            : moment(issue.createdAt).startOf("day").isBefore(date)
+        ).length,
+      };
+      issues.push(dayIssues);
+    }
+    console.log("Issues:", issues);
+    return issues;
+  }, [daysSince, repositoryData]);
+
+  const pullRequestsByDay = useMemo<Array<NodeJS.Dict<any>>>(() => {
+    if (!daysSince) return undefined;
+    if (!repositoryData) return undefined;
+    const pullRequests = [];
+    for (let i = daysSince; i >= 0; i--) {
+      const date = moment().subtract(i, "days").startOf("day");
+      const dayPullRequests = {
+        date: date.format("Do MMM YYYY"),
+        "Pull Requests": repositoryData.pull_request.pull_requests.filter(
+          (pullRequest: IssueElement) =>
+            pullRequest.closed
+              ? moment(pullRequest.createdAt)
+                  .startOf("day")
+                  .isSameOrBefore(date) &&
+                moment(pullRequest.closedAt).startOf("day").isSameOrAfter(date)
+              : moment(pullRequest.createdAt).startOf("day").isBefore(date)
+        ).length,
+      };
+      pullRequests.push(dayPullRequests);
+    }
+    console.log("Pull Requests:", pullRequests);
+    return pullRequests;
+  }, [daysSince, repositoryData]);
+
   const classes = useStyles();
   const theme = useTheme();
   return (
@@ -270,7 +327,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 </Grid>
                 <Grid item sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap>
-                    Issues
+                    Open Issues
                   </Typography>
                   <Typography variant="h5" noWrap>
                     {repositoryData.issue?.total || 0}
@@ -278,7 +335,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 </Grid>
                 <Grid item sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap>
-                    Pull Requests
+                    Open Pull Requests
                   </Typography>
                   <Typography variant="h5" noWrap>
                     {repositoryData.pull_request?.total || 0}
@@ -346,28 +403,69 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 )}
               </Grid>
 
-              {/* <div
-                style={{
-                  width: "100%",
-                  height: 520,
-                }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={something}>
-                    <XAxis dataKey="Date" />
-                    <YAxis />
-                    <Tooltip contentStyle={{ background: "#212121" }} />
-                    <Legend />
-                    {states.map((state: State) => (
-                      <Line
-                        key={state.id}
-                        type="linear"
-                        dataKey={state.name}
-                        stroke={`#${state.color}`}
-                      />
-                    ))}
-                  </LineChart>
-                </ResponsiveContainer>
-              </div> */}
+              <Grid
+                container
+                direction="row"
+                alignContent="space-around"
+                justifyContent="space-around"
+                sx={{ margin: theme.spacing(2, 0) }}>
+                <Grid item sm={12} lg={6} sx={{ padding: theme.spacing(1, 2) }}>
+                  <Typography variant="h4" noWrap gutterBottom>
+                    Open Issues by Day
+                  </Typography>
+                  <div
+                    style={{
+                      width: "100%",
+                      height: 520,
+                    }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={issuesByDay}>
+                        <XAxis dataKey="date" />
+                        <YAxis />
+                        <Tooltip
+                          contentStyle={{
+                            background: "#212121",
+                            border: "none",
+                          }}
+                        />
+                        <Line
+                          type="linear"
+                          dataKey="Issues"
+                          stroke={green[500]}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </Grid>
+                <Grid item sm={12} lg={6} sx={{ padding: theme.spacing(1, 2) }}>
+                  <Typography variant="h4" noWrap gutterBottom>
+                    Open Pull Requests by Day
+                  </Typography>
+                  <div
+                    style={{
+                      width: "100%",
+                      height: 520,
+                    }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={pullRequestsByDay}>
+                        <XAxis dataKey="date" />
+                        <YAxis />
+                        <Tooltip
+                          contentStyle={{
+                            background: "#212121",
+                            border: "none",
+                          }}
+                        />
+                        <Line
+                          type="linear"
+                          dataKey="Pull Requests"
+                          stroke={cyan[500]}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </Grid>
+              </Grid>
             </>
           ) : (
             <Grid
