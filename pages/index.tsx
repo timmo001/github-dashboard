@@ -258,7 +258,8 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
         container
         direction="row"
         alignContent="space-around"
-        justifyContent="center">
+        justifyContent="center"
+      >
         {alert ? (
           <Grid item xs={11}>
             <Alert severity="error">{alert}</Alert>
@@ -275,7 +276,8 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
               sx={{ padding: theme.spacing(1), marginBottom: theme.spacing(2) }}
               onClick={() => {
                 router.push(authorizeUrl);
-              }}>
+              }}
+            >
               Authenticate with GitHub
             </Button>
           </Grid>
@@ -287,14 +289,16 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
           xs={10}
           sx={{
             padding: theme.spacing(0),
-          }}>
+          }}
+        >
           {repositoryData ? (
             <>
               <Grid
                 container
                 direction="row"
                 alignContent="space-around"
-                justifyContent="space-around">
+                justifyContent="space-around"
+              >
                 <Grid item sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap>
                     Discussions
@@ -349,7 +353,8 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 direction="row"
                 alignContent="space-around"
                 justifyContent="space-around"
-                sx={{ margin: theme.spacing(2, 0) }}>
+                sx={{ margin: theme.spacing(2, 0) }}
+              >
                 {repositoryData.release?.name ||
                 repositoryData.refs?.tags[0]?.name ? (
                   <Grid item sx={{ padding: theme.spacing(1, 2) }}>
@@ -372,7 +377,8 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     <Typography
                       variant="h5"
                       noWrap
-                      color={repositoryData.primaryLanguage.color}>
+                      color={repositoryData.primaryLanguage.color}
+                    >
                       {repositoryData.primaryLanguage?.name}
                     </Typography>
                   </Grid>
@@ -386,7 +392,8 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 direction="row"
                 alignContent="space-around"
                 justifyContent="space-around"
-                sx={{ margin: theme.spacing(2, 0) }}>
+                sx={{ margin: theme.spacing(2, 0) }}
+              >
                 <Grid item sm={12} lg={6} sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap gutterBottom>
                     Open Issues by Day
@@ -395,7 +402,8 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     style={{
                       width: "100%",
                       height: 520,
-                    }}>
+                    }}
+                  >
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={issuesByDay}>
                         <XAxis dataKey="date" />
@@ -423,7 +431,8 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     style={{
                       width: "100%",
                       height: 520,
-                    }}>
+                    }}
+                  >
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={pullRequestsByDay}>
                         <XAxis dataKey="date" />
@@ -449,7 +458,8 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
             <Grid
               container
               alignContent="space-around"
-              justifyContent="space-around">
+              justifyContent="space-around"
+            >
               <CircularProgress color="primary" />
             </Grid>
           )}
