@@ -90,7 +90,7 @@ export interface Repository {
   description: string;
   owner: User;
   default_branch_ref: DefaultBranchRef;
-  discussion: Discussion;
+  discussions: Discussion;
   issues: Issue;
   issuesOpen: Count;
   pullRequests: PullRequest;
