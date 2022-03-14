@@ -301,7 +301,8 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
           sx={{
             padding: theme.spacing(0),
             textAlign: "center",
-          }}>
+          }}
+        >
           {repositoryData ? (
             <>
               <Grid
