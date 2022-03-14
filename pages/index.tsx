@@ -208,14 +208,14 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
     if (!repositoryData) return undefined;
     const issues = [];
     for (let i = daysSince; i >= 0; i--) {
-      const date = moment().subtract(i, "days").startOf("day");
+      const date = moment().subtract(i, "days");
       const dayIssues = {
         date: date.format("Do MMM YYYY"),
-        Issues: repositoryData.issue.issues.filter((issue: IssueElement) =>
+        Issues: repositoryData.issues.items.filter((issue: IssueElement) =>
           issue.closed
-            ? moment(issue.createdAt).startOf("day").isSameOrBefore(date) &&
-              moment(issue.closedAt).startOf("day").isSameOrAfter(date)
-            : moment(issue.createdAt).startOf("day").isBefore(date)
+            ? moment(issue.createdAt).isSameOrBefore(date) &&
+              moment(issue.closedAt).isSameOrAfter(date)
+            : moment(issue.createdAt).isBefore(date)
         ).length,
       };
       issues.push(dayIssues);
@@ -231,17 +231,15 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
     if (!repositoryData) return undefined;
     const pullRequests = [];
     for (let i = daysSince; i >= 0; i--) {
-      const date = moment().subtract(i, "days").startOf("day");
+      const date = moment().subtract(i, "days");
       const dayPullRequests = {
         date: date.format("Do MMM YYYY"),
-        "Pull Requests": repositoryData.pull_request.pull_requests.filter(
+        "Pull Requests": repositoryData.pullRequests.items.filter(
           (pullRequest: IssueElement) =>
             pullRequest.closed
-              ? moment(pullRequest.createdAt)
-                  .startOf("day")
-                  .isSameOrBefore(date) &&
-                moment(pullRequest.closedAt).startOf("day").isSameOrAfter(date)
-              : moment(pullRequest.createdAt).startOf("day").isBefore(date)
+              ? moment(pullRequest.createdAt).isSameOrBefore(date) &&
+                moment(pullRequest.closedAt).isSameOrAfter(date)
+              : moment(pullRequest.createdAt).isBefore(date)
         ).length,
       };
       pullRequests.push(dayPullRequests);
@@ -260,8 +258,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
         container
         direction="row"
         alignContent="space-around"
-        justifyContent="center"
-      >
+        justifyContent="center">
         {alert ? (
           <Grid item xs={11}>
             <Alert severity="error">{alert}</Alert>
@@ -278,8 +275,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
               sx={{ padding: theme.spacing(1), marginBottom: theme.spacing(2) }}
               onClick={() => {
                 router.push(authorizeUrl);
-              }}
-            >
+              }}>
               Authenticate with GitHub
             </Button>
           </Grid>
@@ -291,16 +287,14 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
           xs={10}
           sx={{
             padding: theme.spacing(0),
-          }}
-        >
+          }}>
           {repositoryData ? (
             <>
               <Grid
                 container
                 direction="row"
                 alignContent="space-around"
-                justifyContent="space-around"
-              >
+                justifyContent="space-around">
                 <Grid item sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap>
                     Discussions
@@ -314,7 +308,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     Open Issues
                   </Typography>
                   <Typography variant="h5" noWrap>
-                    {issuesByDay[issuesByDay.length - 1].Issues || 0}
+                    {repositoryData.issuesOpen?.total || 0}
                   </Typography>
                 </Grid>
                 <Grid item sx={{ padding: theme.spacing(1, 2) }}>
@@ -322,9 +316,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     Open Pull Requests
                   </Typography>
                   <Typography variant="h5" noWrap>
-                    {pullRequestsByDay[pullRequestsByDay.length - 1][
-                      "Pull Requests"
-                    ] || 0}
+                    {repositoryData.pullRequestsOpen?.total || 0}
                   </Typography>
                 </Grid>
                 <Grid item sx={{ padding: theme.spacing(1, 2) }}>
@@ -357,8 +349,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 direction="row"
                 alignContent="space-around"
                 justifyContent="space-around"
-                sx={{ margin: theme.spacing(2, 0) }}
-              >
+                sx={{ margin: theme.spacing(2, 0) }}>
                 {repositoryData.release?.name ||
                 repositoryData.refs?.tags[0]?.name ? (
                   <Grid item sx={{ padding: theme.spacing(1, 2) }}>
@@ -381,8 +372,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     <Typography
                       variant="h5"
                       noWrap
-                      color={repositoryData.primaryLanguage.color}
-                    >
+                      color={repositoryData.primaryLanguage.color}>
                       {repositoryData.primaryLanguage?.name}
                     </Typography>
                   </Grid>
@@ -396,8 +386,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 direction="row"
                 alignContent="space-around"
                 justifyContent="space-around"
-                sx={{ margin: theme.spacing(2, 0) }}
-              >
+                sx={{ margin: theme.spacing(2, 0) }}>
                 <Grid item sm={12} lg={6} sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap gutterBottom>
                     Open Issues by Day
@@ -406,8 +395,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     style={{
                       width: "100%",
                       height: 520,
-                    }}
-                  >
+                    }}>
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={issuesByDay}>
                         <XAxis dataKey="date" />
@@ -435,8 +423,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     style={{
                       width: "100%",
                       height: 520,
-                    }}
-                  >
+                    }}>
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={pullRequestsByDay}>
                         <XAxis dataKey="date" />
@@ -462,8 +449,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
             <Grid
               container
               alignContent="space-around"
-              justifyContent="space-around"
-            >
+              justifyContent="space-around">
               <CircularProgress color="primary" />
             </Grid>
           )}

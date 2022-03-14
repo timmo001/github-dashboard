@@ -89,9 +89,11 @@ export interface Repository {
   id: number;
   description: string;
   default_branch_ref: DefaultBranchRef;
-  discussion: RepositoryDiscussion;
-  issue: Issue;
-  pull_request: PullRequest;
+  discussion: Discussion;
+  issues: Issue;
+  issuesOpen: Count;
+  pullRequests: PullRequest;
+  pullRequestsOpen: Count;
   release: Release;
   refs: Refs;
   primaryLanguage: PrimaryLanguage;
@@ -113,8 +115,11 @@ export interface Commit {
   sha: string;
 }
 
-export interface RepositoryDiscussion {
+export interface Count {
   total: number;
+}
+
+export interface Discussion extends Count {
   discussions: Array<DiscussionElement>;
 }
 
@@ -136,9 +141,8 @@ export interface IssueElement {
   author: Author;
 }
 
-export interface Issue {
-  total: number;
-  issues: Array<IssueElement>;
+export interface Issue extends Count {
+  items: Array<IssueElement>;
 }
 
 export interface PrimaryLanguage {
@@ -147,9 +151,8 @@ export interface PrimaryLanguage {
   id: string;
 }
 
-export interface PullRequest {
-  total: number;
-  pull_requests: Array<IssueElement>;
+export interface PullRequest extends Count {
+  items: Array<IssueElement>;
 }
 
 export interface Refs {

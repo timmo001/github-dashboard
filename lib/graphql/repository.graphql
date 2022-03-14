@@ -23,23 +23,23 @@ query Repository($owner: String!, $repository: String!) {
         }
       }
     }
-    discussion: discussions(
+    discussions: discussions(
       first: 100
       orderBy: { field: CREATED_AT, direction: DESC }
     ) {
       total: totalCount
-      discussions: nodes {
+      items: nodes {
         title
         url
         number
       }
     }
-    issue: issues(
+    issues: issues(
       first: 100
       orderBy: { field: CREATED_AT, direction: DESC }
     ) {
       total: totalCount
-      issues: nodes {
+      items: nodes {
         title
         url
         number
@@ -54,12 +54,15 @@ query Repository($owner: String!, $repository: String!) {
         }
       }
     }
-    pull_request: pullRequests(
+    issuesOpen: issues(states: OPEN) {
+      total: totalCount
+    }
+    pullRequests: pullRequests(
       first: 100
       orderBy: { field: CREATED_AT, direction: DESC }
     ) {
       total: totalCount
-      pull_requests: nodes {
+      items: nodes {
         title
         url
         number
@@ -73,6 +76,9 @@ query Repository($owner: String!, $repository: String!) {
           login
         }
       }
+    }
+    pullRequestsOpen: pullRequests(states: OPEN) {
+      total: totalCount
     }
     release: latestRelease {
       name
