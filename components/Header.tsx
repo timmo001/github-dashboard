@@ -102,7 +102,7 @@ function Header(props: HeaderProps): ReactElement {
               target="_blank"
               style={{ color: theme.palette.text.primary }}
             >
-              {repositoryData.owner.login}
+              {repositoryData?.owner?.login}
             </a>
             /
             <a
