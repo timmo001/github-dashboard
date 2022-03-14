@@ -20,10 +20,10 @@ export interface ViewerData extends BaseData {
 export interface Viewer {
   avatarUrl: string;
   login: string;
-  name: string;
-  followers: Followers;
+  name?: string;
+  followers?: Followers;
   url: string;
-  repositories: Repositories;
+  repositories?: Repositories;
 }
 
 // Organization
@@ -88,6 +88,7 @@ export interface Repository {
   full_name: string;
   id: number;
   description: string;
+  owner: User;
   default_branch_ref: DefaultBranchRef;
   discussion: Discussion;
   issues: Issue;

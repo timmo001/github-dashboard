@@ -14,6 +14,11 @@ query Repository($owner: String!, $repository: String!) {
     full_name: nameWithOwner
     id: databaseId
     description
+    owner {
+      avatarUrl
+			login
+      url
+    }
     default_branch_ref: defaultBranchRef {
       commit: target {
         ... on Commit {
