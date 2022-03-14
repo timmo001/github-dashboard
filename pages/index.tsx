@@ -18,6 +18,17 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { Icon } from "@mdi/react";
+import {
+  mdiAlertCircleOutline,
+  mdiSourcePull,
+  mdiChatOutline,
+  mdiStarOutline,
+  mdiEyeOutline,
+  mdiSourceFork,
+  mdiTagOutline,
+  mdiTextBoxOutline,
+} from "@mdi/js";
 import moment from "moment";
 
 import { AuthenticationType, OAuth2 } from "lib/types/general";
@@ -287,6 +298,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
           xs={10}
           sx={{
             padding: theme.spacing(0),
+            textAlign: "center",
           }}>
           {repositoryData ? (
             <>
@@ -297,6 +309,11 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 justifyContent="space-around">
                 <Grid item sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap>
+                    <Icon
+                      path={mdiChatOutline}
+                      size={1}
+                      style={{ marginRight: theme.spacing(1) }}
+                    />
                     Discussions
                   </Typography>
                   <Typography variant="h5" noWrap>
@@ -305,7 +322,12 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 </Grid>
                 <Grid item sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap>
-                    Open Issues
+                    <Icon
+                      path={mdiAlertCircleOutline}
+                      size={1}
+                      style={{ marginRight: theme.spacing(1) }}
+                    />
+                    Issues
                   </Typography>
                   <Typography variant="h5" noWrap>
                     {repositoryData.issuesOpen?.total || 0}
@@ -313,7 +335,12 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 </Grid>
                 <Grid item sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap>
-                    Open Pull Requests
+                    <Icon
+                      path={mdiSourcePull}
+                      size={1}
+                      style={{ marginRight: theme.spacing(1) }}
+                    />
+                    Pull Requests
                   </Typography>
                   <Typography variant="h5" noWrap>
                     {repositoryData.pullRequestsOpen?.total || 0}
@@ -321,6 +348,11 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 </Grid>
                 <Grid item sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap>
+                    <Icon
+                      path={mdiStarOutline}
+                      size={1}
+                      style={{ marginRight: theme.spacing(1) }}
+                    />
                     Stargazers
                   </Typography>
                   <Typography variant="h5" noWrap>
@@ -329,6 +361,11 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 </Grid>
                 <Grid item sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap>
+                    <Icon
+                      path={mdiEyeOutline}
+                      size={1}
+                      style={{ marginRight: theme.spacing(1) }}
+                    />
                     Watchers
                   </Typography>
                   <Typography variant="h5" noWrap>
@@ -337,6 +374,11 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 </Grid>
                 <Grid item sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap>
+                    <Icon
+                      path={mdiSourceFork}
+                      size={1}
+                      style={{ marginRight: theme.spacing(1) }}
+                    />
                     Forks
                   </Typography>
                   <Typography variant="h5" noWrap>
@@ -354,6 +396,11 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 repositoryData.refs?.tags[0]?.name ? (
                   <Grid item sx={{ padding: theme.spacing(1, 2) }}>
                     <Typography variant="h4" noWrap>
+                      <Icon
+                        path={mdiTagOutline}
+                        size={1}
+                        style={{ marginRight: theme.spacing(1) }}
+                      />
                       Latest Release
                     </Typography>
                     <Typography variant="h5" noWrap>
@@ -367,6 +414,11 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 {repositoryData.primaryLanguage?.name ? (
                   <Grid item sx={{ padding: theme.spacing(1, 2) }}>
                     <Typography variant="h4" noWrap>
+                      <Icon
+                        path={mdiTextBoxOutline}
+                        size={1}
+                        style={{ marginRight: theme.spacing(1) }}
+                      />
                       Primary Language
                     </Typography>
                     <Typography
