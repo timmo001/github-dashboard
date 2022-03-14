@@ -317,7 +317,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     Discussions
                   </Typography>
                   <Typography variant="h5" noWrap>
-                    {repositoryData.discussion?.total || 0}
+                    {repositoryData.discussions?.total || 0}
                   </Typography>
                 </Grid>
                 <Grid item sx={{ padding: theme.spacing(1, 2) }}>
