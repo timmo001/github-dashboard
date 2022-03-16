@@ -83,38 +83,38 @@ function Header(props: HeaderProps): ReactElement {
         [classes.absolute]: absolute,
         [classes.fixed]: fixed,
       })}
-      color={color}
-    >
+      color={color}>
       <Toolbar className={classes.container}>
         <Typography className={classes.title} component="div" variant="h4">
           {brand}
-          <Typography
-            component="span"
-            variant="h6"
-            sx={{
-              position: "absolute",
-              top: "calc(50% - 0.98rem)",
-              marginLeft: theme.spacing(4),
-            }}
-          >
-            <a
-              href={repositoryData.owner.url}
-              rel="noreferrer"
-              target="_blank"
-              style={{ color: theme.palette.text.primary }}
-            >
-              {repositoryData?.owner?.login}
-            </a>
-            /
-            <a
-              href={repositoryData.url}
-              rel="noreferrer"
-              target="_blank"
-              style={{ color: theme.palette.text.primary }}
-            >
-              {repositoryData?.name}
-            </a>
-          </Typography>
+          {repositoryData ? (
+            <Typography
+              component="span"
+              variant="h6"
+              sx={{
+                position: "absolute",
+                top: "calc(50% - 0.98rem)",
+                marginLeft: theme.spacing(4),
+              }}>
+              <a
+                href={repositoryData.owner.url}
+                rel="noreferrer"
+                target="_blank"
+                style={{ color: theme.palette.text.primary }}>
+                {repositoryData?.owner?.login}
+              </a>
+              /
+              <a
+                href={repositoryData.url}
+                rel="noreferrer"
+                target="_blank"
+                style={{ color: theme.palette.text.primary }}>
+                {repositoryData?.name}
+              </a>
+            </Typography>
+          ) : (
+            ""
+          )}
         </Typography>
         <Hidden xlDown implementation="css">
           {rightLinks}
@@ -124,8 +124,7 @@ function Header(props: HeaderProps): ReactElement {
             color="inherit"
             aria-label="open drawer"
             size="large"
-            onClick={handleDrawerToggle}
-          >
+            onClick={handleDrawerToggle}>
             <Icon path={mdiMenu} size={1} />
           </IconButton>
         </Hidden>
@@ -138,8 +137,7 @@ function Header(props: HeaderProps): ReactElement {
           classes={{
             paper: classes.drawerPaper,
           }}
-          onClose={handleDrawerToggle}
-        >
+          onClose={handleDrawerToggle}>
           <div className={classes.appResponsive}>{rightLinks}</div>
         </Drawer>
       </Hidden>
