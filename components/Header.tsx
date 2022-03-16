@@ -83,7 +83,8 @@ function Header(props: HeaderProps): ReactElement {
         [classes.absolute]: absolute,
         [classes.fixed]: fixed,
       })}
-      color={color}>
+      color={color}
+    >
       <Toolbar className={classes.container}>
         <Typography className={classes.title} component="div" variant="h4">
           {brand}
@@ -94,12 +95,14 @@ function Header(props: HeaderProps): ReactElement {
               position: "absolute",
               top: "calc(50% - 0.98rem)",
               marginLeft: theme.spacing(4),
-            }}>
+            }}
+          >
             <a
               href={repositoryData.owner.url}
               rel="noreferrer"
               target="_blank"
-              style={{ color: theme.palette.text.primary }}>
+              style={{ color: theme.palette.text.primary }}
+            >
               {repositoryData?.owner?.login}
             </a>
             /
@@ -107,7 +110,8 @@ function Header(props: HeaderProps): ReactElement {
               href={repositoryData.url}
               rel="noreferrer"
               target="_blank"
-              style={{ color: theme.palette.text.primary }}>
+              style={{ color: theme.palette.text.primary }}
+            >
               {repositoryData?.name}
             </a>
           </Typography>
@@ -120,7 +124,8 @@ function Header(props: HeaderProps): ReactElement {
             color="inherit"
             aria-label="open drawer"
             size="large"
-            onClick={handleDrawerToggle}>
+            onClick={handleDrawerToggle}
+          >
             <Icon path={mdiMenu} size={1} />
           </IconButton>
         </Hidden>
@@ -133,7 +138,8 @@ function Header(props: HeaderProps): ReactElement {
           classes={{
             paper: classes.drawerPaper,
           }}
-          onClose={handleDrawerToggle}>
+          onClose={handleDrawerToggle}
+        >
           <div className={classes.appResponsive}>{rightLinks}</div>
         </Drawer>
       </Hidden>
