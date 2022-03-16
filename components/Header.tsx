@@ -97,7 +97,7 @@ function Header(props: HeaderProps): ReactElement {
             }}>
             <a
               href={repositoryData.owner.url}
-              ref="noreferrer"
+              rel="noreferrer"
               target="_blank"
               style={{ color: theme.palette.text.primary }}>
               {repositoryData?.owner?.login}
@@ -105,7 +105,7 @@ function Header(props: HeaderProps): ReactElement {
             /
             <a
               href={repositoryData.url}
-              ref="noreferrer"
+              rel="noreferrer"
               target="_blank"
               style={{ color: theme.palette.text.primary }}>
               {repositoryData?.name}
