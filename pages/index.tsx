@@ -47,6 +47,7 @@ import graphqlRepository from "lib/graphql/repository.graphql";
 import graphqlUser from "lib/graphql/user.graphql";
 import graphqlViewer from "lib/graphql/viewer.graphql";
 import Layout from "components/Layout";
+import Stat from "components/Stat";
 import useStyles from "assets/jss/components/layout";
 
 interface DashboardProps {
@@ -307,94 +308,40 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 direction="row"
                 alignContent="space-around"
                 justifyContent="space-around">
-                <Grid item sx={{ padding: theme.spacing(1, 2) }}>
-                  <Typography variant="h4" noWrap>
-                    <Icon
-                      path={mdiChatOutline}
-                      size={1}
-                      style={{ marginRight: theme.spacing(1) }}
-                    />
-                    Discussions
-                  </Typography>
-                  <Typography variant="h5" noWrap>
-                    {repositoryData.discussions?.total || 0}
-                  </Typography>
-                </Grid>
-                <Grid item sx={{ padding: theme.spacing(1, 2) }}>
-                  <Typography variant="h4" noWrap>
-                    <Icon
-                      path={mdiStarOutline}
-                      size={1}
-                      style={{ marginRight: theme.spacing(1) }}
-                    />
-                    Stargazers
-                  </Typography>
-                  <Typography variant="h5" noWrap>
-                    {repositoryData.stargazers_count || 0}
-                  </Typography>
-                </Grid>
-                <Grid item sx={{ padding: theme.spacing(1, 2) }}>
-                  <Typography variant="h4" noWrap>
-                    <Icon
-                      path={mdiEyeOutline}
-                      size={1}
-                      style={{ marginRight: theme.spacing(1) }}
-                    />
-                    Watchers
-                  </Typography>
-                  <Typography variant="h5" noWrap>
-                    {repositoryData.watchers?.totalCount || 0}
-                  </Typography>
-                </Grid>
-                <Grid item sx={{ padding: theme.spacing(1, 2) }}>
-                  <Typography variant="h4" noWrap>
-                    <Icon
-                      path={mdiSourceFork}
-                      size={1}
-                      style={{ marginRight: theme.spacing(1) }}
-                    />
-                    Forks
-                  </Typography>
-                  <Typography variant="h5" noWrap>
-                    {repositoryData.forks_count || 0}
-                  </Typography>
-                </Grid>
+                <Stat
+                  icon={mdiChatOutline}
+                  title="Discussions"
+                  value={repositoryData.discussions?.total || 0}
+                />
+                <Stat
+                  icon={mdiStarOutline}
+                  title="Stargazers"
+                  value={repositoryData.stargazers_count || 0}
+                />
+                <Stat
+                  icon={mdiEyeOutline}
+                  title="Watchers"
+                  value={repositoryData.watchers?.totalCount || 0}
+                />
                 {repositoryData.release?.name ||
                 repositoryData.refs?.tags[0]?.name ? (
-                  <Grid item sx={{ padding: theme.spacing(1, 2) }}>
-                    <Typography variant="h4" noWrap>
-                      <Icon
-                        path={mdiTagOutline}
-                        size={1}
-                        style={{ marginRight: theme.spacing(1) }}
-                      />
-                      Latest Release
-                    </Typography>
-                    <Typography variant="h5" noWrap>
-                      {repositoryData.release?.name ||
-                        repositoryData.refs?.tags[0]?.name}
-                    </Typography>
-                  </Grid>
+                  <Stat
+                    icon={mdiTagOutline}
+                    title="Latest Release"
+                    value={
+                      repositoryData.release?.name ||
+                      repositoryData.refs?.tags[0]?.name
+                    }
+                  />
                 ) : (
                   ""
                 )}
                 {repositoryData.primaryLanguage?.name ? (
-                  <Grid item sx={{ padding: theme.spacing(1, 2) }}>
-                    <Typography variant="h4" noWrap>
-                      <Icon
-                        path={mdiTextBoxOutline}
-                        size={1}
-                        style={{ marginRight: theme.spacing(1) }}
-                      />
-                      Primary Language
-                    </Typography>
-                    <Typography
-                      variant="h5"
-                      noWrap
-                      color={repositoryData.primaryLanguage.color}>
-                      {repositoryData.primaryLanguage?.name}
-                    </Typography>
-                  </Grid>
+                  <Stat
+                    icon={mdiTextBoxOutline}
+                    title="Primary Language"
+                    value={repositoryData.primaryLanguage?.name}
+                  />
                 ) : (
                   ""
                 )}
