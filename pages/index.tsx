@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { Alert, Button, CircularProgress, Grid, useTheme } from "@mui/material";
-import { mdiSourceRepositoryMultiple } from "@mdi/js";
+import { mdiAccountMultipleOutline, mdiSourceRepositoryMultiple } from "@mdi/js";
 
 import { AuthenticationType, OAuth2 } from "lib/types/general";
 import { GitHub } from "lib/github";
@@ -207,6 +207,16 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                   icon={mdiSourceRepositoryMultiple}
                   title="Repositories"
                   value={userData.repositories?.totalCount || 0}
+                />
+                <Stat
+                  icon={mdiAccountMultipleOutline}
+                  title="Followers"
+                  value={userData.followers?.totalCount || 0}
+                />
+                <Stat
+                  icon={mdiAccountMultipleOutline}
+                  title="Following"
+                  value={userData.following?.totalCount || 0}
                 />
               </Grid>
             </>

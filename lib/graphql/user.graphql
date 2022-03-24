@@ -11,6 +11,9 @@ query User($user: String!) {
     followers {
       totalCount
     }
+    following {
+      totalCount
+    }
     repositories(first: 100, orderBy: { field: PUSHED_AT, direction: DESC }) {
       totalCount
       nodes {

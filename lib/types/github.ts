@@ -22,6 +22,7 @@ export interface Viewer {
   login: string;
   name?: string;
   followers?: Followers;
+  following?: Following;
   url: string;
   repositories?: Repositories;
 }
@@ -50,11 +51,16 @@ export interface User {
   name: string;
   url: string;
   followers: Followers;
+  following: Following;
   repositories: Repositories;
 }
 
 // Viewer / User
 export interface Followers {
+  totalCount: number;
+}
+
+export interface Following {
   totalCount: number;
 }
 
