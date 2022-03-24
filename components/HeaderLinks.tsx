@@ -74,7 +74,19 @@ function HeaderLinks(): ReactElement {
             }}
           >
             <Button variant="text" className={classes.navLink}>
-              <span className={classes.listItemText}>Dashboard</span>
+              <span className={classes.listItemText}>User</span>
+            </Button>
+          </Link>
+        </ListItem>
+        <ListItem className={classes.listItem}>
+          <Link
+            href={{
+              pathname: "/repository",
+              query: router.query,
+            }}
+          >
+            <Button variant="text" className={classes.navLink}>
+              <span className={classes.listItemText}>Repository</span>
             </Button>
           </Link>
         </ListItem>
