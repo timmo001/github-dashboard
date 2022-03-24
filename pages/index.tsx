@@ -2,16 +2,18 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { Alert, Button, CircularProgress, Grid, useTheme } from "@mui/material";
+import { mdiSourceRepositoryMultiple } from "@mdi/js";
 
 import { AuthenticationType, OAuth2 } from "lib/types/general";
 import { GitHub } from "lib/github";
-import { UserData, ViewerData } from "lib/types/github";
 import { useAuth } from "components/Context/Auth";
+import { UserData, ViewerData } from "lib/types/github";
 import { useUser } from "components/Context/User";
 import { useViewer } from "components/Context/Viewer";
 import graphqlUser from "lib/graphql/user.graphql";
 import graphqlViewer from "lib/graphql/viewer.graphql";
 import Layout from "components/Layout";
+import Stat from "components/Stat";
 import useStyles from "assets/jss/components/layout";
 
 interface DashboardProps {
@@ -201,7 +203,11 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 direction="row"
                 alignContent="space-around"
                 justifyContent="space-around">
-                  
+                <Stat
+                  icon={mdiSourceRepositoryMultiple}
+                  title="Repositories"
+                  value={userData.repositories?.totalCount || 0}
+                />
               </Grid>
             </>
           ) : (

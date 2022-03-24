@@ -60,6 +60,7 @@ export interface Followers {
 
 // Viewer / User / Organization
 export interface Repositories {
+  totalCount: number;
   nodes: Array<RepositoryNode>;
 }
 
