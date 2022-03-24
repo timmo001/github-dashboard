@@ -50,6 +50,7 @@ export interface User {
   login: string;
   name: string;
   url: string;
+  contributionsCollection: ContributionsCollection;
   followers: Followers;
   following: Following;
   repositories: Repositories;
@@ -62,6 +63,23 @@ export interface Followers {
 
 export interface Following {
   totalCount: number;
+}
+
+export interface ContributionsCollection {
+  contributionCalendar: ContributionCalendar;
+}
+
+export interface ContributionCalendar {
+  totalContributions: number;
+  weeks: Array<Week>;
+}
+
+export interface Week {
+  contributionDays: Array<ContributionDay>;
+}
+
+export interface ContributionDay {
+  contributionCount: number;
 }
 
 // Viewer / User / Organization
