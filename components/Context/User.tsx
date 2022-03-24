@@ -7,9 +7,7 @@ import React, {
 
 import { User as UserEntity } from "lib/types/github";
 
-const UserContext = createContext<UserEntity | undefined>(
-  undefined
-);
+const UserContext = createContext<UserEntity | undefined>(undefined);
 const SetUserContext = createContext<null | React.Dispatch<
   React.SetStateAction<UserEntity | undefined>
 >>(null);
@@ -23,18 +21,14 @@ export const UserProvider = ({
 
   return (
     <SetUserContext.Provider value={setConfig}>
-      <UserContext.Provider value={config}>
-        {children}
-      </UserContext.Provider>
+      <UserContext.Provider value={config}>{children}</UserContext.Provider>
     </SetUserContext.Provider>
   );
 };
 
 export const useUser = (): [
   user: UserEntity | undefined,
-  setUser: React.Dispatch<
-    React.SetStateAction<UserEntity | undefined>
-  >
+  setUser: React.Dispatch<React.SetStateAction<UserEntity | undefined>>
 ] => {
   const user = useContext(UserContext);
   const setUser = useContext(SetUserContext);
