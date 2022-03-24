@@ -266,7 +266,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                   icon={mdiAccountMultipleOutline}
                   title="Following"
                   value={userData.following?.totalCount || 0}
-                />{" "}
+                />
                 <Stat
                   icon={mdiSourceCommit}
                   title="Contributions"
