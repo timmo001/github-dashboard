@@ -36,15 +36,12 @@ import { GitHub } from "lib/github";
 import {
   IssueElement,
   RepositoryData,
-  UserData,
   ViewerData,
 } from "lib/types/github";
 import { useAuth } from "components/Context/Auth";
 import { useRepository } from "components/Context/Repository";
-import { useUser } from "components/Context/User";
 import { useViewer } from "components/Context/Viewer";
 import graphqlRepository from "lib/graphql/repository.graphql";
-import graphqlUser from "lib/graphql/user.graphql";
 import graphqlViewer from "lib/graphql/viewer.graphql";
 import Layout from "components/Layout";
 import Stat from "components/Stat";
@@ -62,7 +59,6 @@ function Repository({ clientId }: RepositoryProps): ReactElement {
   const [authenticated, setAuthenticated] = useState<AuthenticationType>(0);
   const [authorizeUrl, setAuthorizeUrl] = useState<string>();
   const [repositoryData, setRepositoryData] = useRepository();
-  const [, setUserData] = useUser();
   const [, setViewerData] = useViewer();
 
   const router = useRouter();
@@ -190,19 +186,7 @@ function Repository({ clientId }: RepositoryProps): ReactElement {
         }
         setRepositoryData(data.repository);
       });
-    github
-      .graphQL<UserData>(graphqlUser, {
-        user: owner,
-      })
-      .then((data: UserData) => {
-        console.log("User Data:", data.user);
-        if (!data) {
-          console.error("Could not fetch user data.");
-          setAlert("Could not fetch user data.");
-          return;
-        }
-        setUserData(data.user);
-      });
+
   }, [authenticated]);
 
   const daysSince = useMemo<number>(() => {

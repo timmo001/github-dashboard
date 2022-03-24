@@ -1,53 +1,17 @@
-import React, { ReactElement, useEffect, useMemo, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import {
-  Alert,
-  Button,
-  CircularProgress,
-  Grid,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import { cyan, green } from "@mui/material/colors";
-import {
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-import { Icon } from "@mdi/react";
-import {
-  mdiAlertCircleOutline,
-  mdiSourcePull,
-  mdiChatOutline,
-  mdiStarOutline,
-  mdiEyeOutline,
-  mdiSourceFork,
-  mdiTagOutline,
-  mdiTextBoxOutline,
-} from "@mdi/js";
-import moment from "moment";
+import { Alert, Button, CircularProgress, Grid, useTheme } from "@mui/material";
 
 import { AuthenticationType, OAuth2 } from "lib/types/general";
 import { GitHub } from "lib/github";
-import {
-  IssueElement,
-  RepositoryData,
-  UserData,
-  ViewerData,
-} from "lib/types/github";
+import { UserData, ViewerData } from "lib/types/github";
 import { useAuth } from "components/Context/Auth";
-import { useRepository } from "components/Context/Repository";
 import { useUser } from "components/Context/User";
 import { useViewer } from "components/Context/Viewer";
-import graphqlRepository from "lib/graphql/repository.graphql";
 import graphqlUser from "lib/graphql/user.graphql";
 import graphqlViewer from "lib/graphql/viewer.graphql";
 import Layout from "components/Layout";
-import Stat from "components/Stat";
 import useStyles from "assets/jss/components/layout";
 
 interface DashboardProps {
@@ -61,8 +25,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
   const [alert, setAlert] = useState<string>();
   const [authenticated, setAuthenticated] = useState<AuthenticationType>(0);
   const [authorizeUrl, setAuthorizeUrl] = useState<string>();
-  const [repositoryData, setRepositoryData] = useRepository();
-  const [, setUserData] = useUser();
+  const [userData, setUserData] = useUser();
   const [, setViewerData] = useViewer();
 
   const router = useRouter();
@@ -163,7 +126,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
 
   useEffect(() => {
     if (authenticated !== AuthenticationType.Authenticated) return;
-    let type: string, owner: string, repository: string;
+    let type: string, owner: string;
     const currentRepositoryStr =
       window.localStorage.getItem("currentRepository");
     if (!currentRepositoryStr) return;
@@ -171,25 +134,10 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
       const currentRepository = JSON.parse(currentRepositoryStr);
       type = currentRepository.type;
       owner = currentRepository.owner;
-      repository = currentRepository.repository;
     } catch (e) {
       console.error(e);
     }
-    if (!type || !owner || !repository) return;
-    github
-      .graphQL<RepositoryData>(graphqlRepository, {
-        owner,
-        repository,
-      })
-      .then((data: RepositoryData) => {
-        console.log("Repository Data:", data.repository);
-        if (!data) {
-          console.error("Could not fetch repository data.");
-          setAlert("Could not fetch repository data.");
-          return;
-        }
-        setRepositoryData(data.repository);
-      });
+    if (!type || !owner) return;
     github
       .graphQL<UserData>(graphqlUser, {
         user: owner,
@@ -204,61 +152,6 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
         setUserData(data.user);
       });
   }, [authenticated]);
-
-  const daysSince = useMemo<number>(() => {
-    const firstDate = moment().subtract(1, "month").startOf("month").toDate();
-    console.log("First date:", firstDate);
-
-    const daysSince = moment().diff(firstDate, "days");
-    console.log("Days since:", daysSince);
-
-    return daysSince;
-  }, []);
-
-  const issuesByDay = useMemo<Array<{ date: string; Issues: number }>>(() => {
-    if (!daysSince) return undefined;
-    if (!repositoryData) return undefined;
-    const issues = [];
-    for (let i = daysSince; i >= 0; i--) {
-      const date = moment().subtract(i, "days");
-      const dayIssues = {
-        date: date.format("Do MMM YYYY"),
-        Issues: repositoryData.issues.items.filter((issue: IssueElement) =>
-          issue.closed
-            ? moment(issue.createdAt).isSameOrBefore(date) &&
-              moment(issue.closedAt).isSameOrAfter(date)
-            : moment(issue.createdAt).isBefore(date)
-        ).length,
-      };
-      issues.push(dayIssues);
-    }
-    console.log("Issues:", issues);
-    return issues;
-  }, [daysSince, repositoryData]);
-
-  const pullRequestsByDay = useMemo<
-    Array<{ date: string; "Pull Requests": number }>
-  >(() => {
-    if (!daysSince) return undefined;
-    if (!repositoryData) return undefined;
-    const pullRequests = [];
-    for (let i = daysSince; i >= 0; i--) {
-      const date = moment().subtract(i, "days");
-      const dayPullRequests = {
-        date: date.format("Do MMM YYYY"),
-        "Pull Requests": repositoryData.pullRequests.items.filter(
-          (pullRequest: IssueElement) =>
-            pullRequest.closed
-              ? moment(pullRequest.createdAt).isSameOrBefore(date) &&
-                moment(pullRequest.closedAt).isSameOrAfter(date)
-              : moment(pullRequest.createdAt).isBefore(date)
-        ).length,
-      };
-      pullRequests.push(dayPullRequests);
-    }
-    console.log("Pull Requests:", pullRequests);
-    return pullRequests;
-  }, [daysSince, repositoryData]);
 
   const classes = useStyles();
   const theme = useTheme();
@@ -301,135 +194,14 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
             padding: theme.spacing(0),
             textAlign: "center",
           }}>
-          {repositoryData ? (
+          {userData ? (
             <>
               <Grid
                 container
                 direction="row"
                 alignContent="space-around"
                 justifyContent="space-around">
-                <Stat
-                  icon={mdiChatOutline}
-                  title="Discussions"
-                  value={repositoryData.discussions?.total || 0}
-                />
-                <Stat
-                  icon={mdiStarOutline}
-                  title="Stargazers"
-                  value={repositoryData.stargazers_count || 0}
-                />
-                <Stat
-                  icon={mdiEyeOutline}
-                  title="Watchers"
-                  value={repositoryData.watchers?.totalCount || 0}
-                />
-                <Stat
-                  icon={mdiSourceFork}
-                  title="Forks"
-                  value={repositoryData.forks_count || 0}
-                />
-                {repositoryData.release?.name ||
-                repositoryData.refs?.tags[0]?.name ? (
-                  <Stat
-                    icon={mdiTagOutline}
-                    title="Latest Release"
-                    value={
-                      repositoryData.release?.name ||
-                      repositoryData.refs?.tags[0]?.name
-                    }
-                  />
-                ) : (
-                  ""
-                )}
-                {repositoryData.primaryLanguage?.name ? (
-                  <Stat
-                    icon={mdiTextBoxOutline}
-                    title="Primary Language"
-                    value={repositoryData.primaryLanguage?.name}
-                  />
-                ) : (
-                  ""
-                )}
-              </Grid>
-
-              <Grid
-                container
-                direction="row"
-                alignContent="space-around"
-                justifyContent="space-around"
-                sx={{ margin: theme.spacing(2, 0) }}>
-                <Grid item sm={12} lg={6} sx={{ padding: theme.spacing(1, 2) }}>
-                  <Typography variant="h4" noWrap>
-                    <Icon
-                      path={mdiAlertCircleOutline}
-                      size={1}
-                      style={{ marginRight: theme.spacing(1) }}
-                    />
-                    Issues
-                  </Typography>
-                  <Typography variant="h5" noWrap>
-                    {repositoryData.issuesOpen?.total || 0}
-                  </Typography>
-                  <div
-                    style={{
-                      width: "100%",
-                      height: 520,
-                    }}>
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={issuesByDay}>
-                        <XAxis dataKey="date" />
-                        <YAxis />
-                        <Tooltip
-                          contentStyle={{
-                            background: "#212121",
-                            border: "none",
-                          }}
-                        />
-                        <Line
-                          type="linear"
-                          dataKey="Issues"
-                          stroke={green[500]}
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </Grid>
-                <Grid item sm={12} lg={6} sx={{ padding: theme.spacing(1, 2) }}>
-                  <Typography variant="h4" noWrap>
-                    <Icon
-                      path={mdiSourcePull}
-                      size={1}
-                      style={{ marginRight: theme.spacing(1) }}
-                    />
-                    Open Pull Requests
-                  </Typography>
-                  <Typography variant="h5" noWrap>
-                    {repositoryData.pullRequestsOpen?.total || 0}
-                  </Typography>
-                  <div
-                    style={{
-                      width: "100%",
-                      height: 520,
-                    }}>
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={pullRequestsByDay}>
-                        <XAxis dataKey="date" />
-                        <YAxis />
-                        <Tooltip
-                          contentStyle={{
-                            background: "#212121",
-                            border: "none",
-                          }}
-                        />
-                        <Line
-                          type="linear"
-                          dataKey="Pull Requests"
-                          stroke={cyan[500]}
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </Grid>
+                  
               </Grid>
             </>
           ) : (
