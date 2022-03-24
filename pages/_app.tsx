@@ -9,13 +9,14 @@ import {
 } from "@mui/material";
 
 import { AuthProvider } from "components/Context/Auth";
+import { RepositoryProvider } from "components/Context/Repository";
+import { UserProvider } from "components/Context/User";
 import { ViewerProvider } from "components/Context/Viewer";
 import theme from "components/Theme";
 
 import "@fontsource/roboto";
 
 import "assets/css/style.css";
-import { RepositoryProvider } from "components/Context/Repository";
 
 declare module "@mui/styles/defaultTheme" {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -47,16 +48,20 @@ function App({ Component, pageProps }: AppProps): ReactElement {
         <ThemeProvider theme={theme}>
           <AuthProvider>
             <>
-              <ViewerProvider>
+              <UserProvider>
                 <>
-                  <RepositoryProvider>
+                  <ViewerProvider>
                     <>
-                      <CssBaseline />
-                      <Component {...pageProps} />
+                      <RepositoryProvider>
+                        <>
+                          <CssBaseline />
+                          <Component {...pageProps} />
+                        </>
+                      </RepositoryProvider>
                     </>
-                  </RepositoryProvider>
+                  </ViewerProvider>
                 </>
-              </ViewerProvider>
+              </UserProvider>
             </>
           </AuthProvider>
         </ThemeProvider>
