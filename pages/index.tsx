@@ -325,7 +325,11 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                   icon={mdiEyeOutline}
                   title="Watchers"
                   value={repositoryData.watchers?.totalCount || 0}
-                />
+                />                <Stat
+                icon={mdiSourceFork}
+                title="Forks"
+                value={repositoryData.forks_count || 0}
+              />
                 {repositoryData.release?.name ||
                 repositoryData.refs?.tags[0]?.name ? (
                   <Stat
