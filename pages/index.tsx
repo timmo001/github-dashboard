@@ -310,7 +310,8 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 container
                 direction="row"
                 alignContent="space-around"
-                justifyContent="space-around">
+                justifyContent="space-around"
+              >
                 <Stat
                   icon={mdiChatOutline}
                   title="Discussions"
