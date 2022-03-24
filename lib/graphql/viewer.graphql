@@ -8,6 +8,16 @@
     login
     name
     url
+    contributionsCollection {
+      contributionCalendar {
+        totalContributions
+        weeks {
+          contributionDays {
+            contributionCount
+          }
+        }
+      }
+    }
     followers {
       totalCount
     }
