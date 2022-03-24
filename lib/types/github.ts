@@ -71,10 +71,10 @@ export interface ContributionsCollection {
 
 export interface ContributionCalendar {
   totalContributions: number;
-  weeks: Array<Week>;
+  weeks: Array<ContributionWeek>;
 }
 
-export interface Week {
+export interface ContributionWeek {
   contributionDays: Array<ContributionDay>;
 }
 

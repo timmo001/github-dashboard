@@ -1,8 +1,22 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useMemo, useState } from "react";
 import { GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { Alert, Button, CircularProgress, Grid, useTheme } from "@mui/material";
-import { mdiAccountMultipleOutline, mdiSourceRepositoryMultiple } from "@mdi/js";
+import { green } from "@mui/material/colors";
+import {
+  mdiAccountMultipleOutline,
+  mdiSourceCommit,
+  mdiSourceRepositoryMultiple,
+} from "@mdi/js";
+import {
+  ResponsiveContainer,
+  LineChart,
+  XAxis,
+  YAxis,
+  Line,
+  Tooltip,
+} from "recharts";
+import moment from "moment";
 
 import { AuthenticationType, OAuth2 } from "lib/types/general";
 import { GitHub } from "lib/github";
@@ -155,6 +169,41 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
       });
   }, [authenticated]);
 
+  const daysSince = useMemo<number>(() => {
+    const firstDate = moment().subtract(1, "month").toDate();
+    console.log("First date:", firstDate);
+
+    const daysSince = moment().diff(firstDate, "days");
+    console.log("Days since:", daysSince);
+
+    return daysSince;
+  }, []);
+
+  const contributionsByDay = useMemo<
+    Array<{ date: string; Issues: number }>
+  >(() => {
+    if (!daysSince) return undefined;
+    if (!userData) return undefined;
+    const issues = [];
+    for (let i = daysSince; i >= 0; i--) {
+      const date = moment().subtract(i, "days");
+      const dayContributions = {
+        date: date.format("Do MMM YYYY"),
+        Contributions: 1,
+        // userData.contributionsCollection.contributionCalendar.weeks.filter((week: ContributionWeek) =>{}
+        //   week.contributionDays.
+        //   // issue.closed
+        //   //   ? moment(issue.createdAt).isSameOrBefore(date) &&
+        //   //     moment(issue.closedAt).isSameOrAfter(date)
+        //   //   : moment(issue.createdAt).isBefore(date)
+        // ).length,
+      };
+      issues.push(dayContributions);
+    }
+    console.log("Issues:", issues);
+    return issues;
+  }, [daysSince, userData]);
+
   const classes = useStyles();
   const theme = useTheme();
   return (
@@ -217,7 +266,38 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                   icon={mdiAccountMultipleOutline}
                   title="Following"
                   value={userData.following?.totalCount || 0}
+                />{" "}
+                <Stat
+                  icon={mdiSourceCommit}
+                  title="Contributions"
+                  value={
+                    userData.contributionsCollection?.contributionCalendar
+                      ?.totalContributions || 0
+                  }
                 />
+                <div
+                  style={{
+                    width: "100%",
+                    height: 520,
+                  }}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={contributionsByDay}>
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip
+                        contentStyle={{
+                          background: "#212121",
+                          border: "none",
+                        }}
+                      />
+                      <Line
+                        type="linear"
+                        dataKey="Contributions"
+                        stroke={green[500]}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
               </Grid>
             </>
           ) : (
