@@ -31,7 +31,7 @@ import {
 } from "@mdi/js";
 import moment from "moment";
 
-import { AuthenticationType, OAuth2 } from "@/types/general";
+import { Status, OAuth2 } from "@/types/general";
 import { GitHub } from "@/lib/github";
 import {
   IssueElement,
@@ -57,11 +57,11 @@ interface HomeProps {
 const github = new GitHub();
 
 export default function Home({ clientId }: HomeProps): ReactElement {
-  const [auth, setAuth] = useAuth();
   const [alert, setAlert] = useState<string>();
-  const [authenticated, setAuthenticated] = useState<AuthenticationType>(0);
+  const [auth, setAuth] = useAuth();
   const [authorizeUrl, setAuthorizeUrl] = useState<string>();
   const [repositoryData, setRepositoryData] = useRepository();
+  const [status, setStatus] = useState<Status>(Status.NotAuthorized);
   const [, setUserData] = useUser();
   const [, setViewerData] = useViewer();
 
@@ -72,7 +72,7 @@ export default function Home({ clientId }: HomeProps): ReactElement {
     setAlert(undefined);
     setAuthorizeUrl(undefined);
 
-    if (authenticated > AuthenticationType.NotAuthorized) return;
+    if (status > Status.NotAuthorized) return;
     console.log("Authenticating...");
 
     let oAuthData: OAuth2 | null = null;
@@ -96,12 +96,12 @@ export default function Home({ clientId }: HomeProps): ReactElement {
           );
         })();
       }
-      setAuthenticated(AuthenticationType.Authenticated);
+      setStatus(Status.Authenticated);
       return;
     }
 
     if (code && code.length > 0 && state && state.length > 0) {
-      setAuthenticated(AuthenticationType.Authenticating);
+      setStatus(Status.Authenticating);
       console.log("Using code and state:", code, state);
       (async () => {
         oAuthData = await github.authenticate(
@@ -133,7 +133,7 @@ export default function Home({ clientId }: HomeProps): ReactElement {
 
         setAuth(oAuthData);
         github.setAuth(oAuthData);
-        setAuthenticated(AuthenticationType.Authenticated);
+        setStatus(Status.Authenticated);
       })();
       return;
     } else {
@@ -141,11 +141,11 @@ export default function Home({ clientId }: HomeProps): ReactElement {
       console.log("Generating authorize URL:", url);
       setAuthorizeUrl(url);
     }
-  }, [authenticated, clientId, code, router, setAuth, state]);
+  }, [status, clientId, code, router, setAuth, state]);
 
   useEffect(() => {
-    console.log("Authenticated:", authenticated);
-    if (authenticated !== AuthenticationType.Authenticated) return;
+    console.log("Status:", status);
+    if (status !== Status.Authenticated) return;
     (async () => {
       if (!github.auth)
         if (!auth) return;
@@ -159,16 +159,19 @@ export default function Home({ clientId }: HomeProps): ReactElement {
       }
       setViewerData(data.viewer);
     })();
-  }, [auth, authenticated, setViewerData]);
+  }, [auth, status, setViewerData]);
 
   useEffect(() => {
-    if (authenticated !== AuthenticationType.Authenticated) return;
+    if (status !== Status.Authenticated) return;
     let type: string | null = null,
       owner: string | null = null,
       repository: string | null = null;
     const currentRepositoryStr =
       window.localStorage.getItem("currentRepository");
-    if (!currentRepositoryStr) return;
+    if (!currentRepositoryStr) {
+      setStatus(Status.NoRepository);
+      return;
+    }
     try {
       const currentRepository = JSON.parse(currentRepositoryStr);
       type = currentRepository.type;
@@ -205,7 +208,7 @@ export default function Home({ clientId }: HomeProps): ReactElement {
         }
         setUserData(data.user);
       });
-  }, [authenticated, setRepositoryData, setUserData]);
+  }, [status, setRepositoryData, setUserData]);
 
   const daysSince = useMemo<number>(() => {
     const firstDate = moment().subtract(1, "month").startOf("month").toDate();
@@ -441,7 +444,13 @@ export default function Home({ clientId }: HomeProps): ReactElement {
               container
               alignContent="space-around"
               justifyContent="space-around">
-              <CircularProgress color="primary" />
+              {status === Status.NoRepository ? (
+                <Typography variant="h4" noWrap>
+                  Please select a repository
+                </Typography>
+              ) : (
+                <CircularProgress color="primary" />
+              )}
             </Grid>
           )}
         </Grid>

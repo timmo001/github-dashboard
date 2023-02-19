@@ -3,11 +3,12 @@ export interface Picker {
   label: string;
 }
 
-export enum AuthenticationType {
+export enum Status {
   NotAuthorized = 0,
   Authenticating = 1,
   Authenticated = 2,
   NotAuthenticated = 3,
+  NoRepository = 4,
 }
 
 export interface OAuth2 {
