@@ -46,10 +46,6 @@ function Layout(props: LayoutProps): ReactElement {
       <Header
         {...props}
         brand="GitHub Dashboard"
-        changeColorOnScroll={{
-          height: 54,
-          color: "primary",
-        }}
         color="transparent"
         fixed
         rightLinks={<HeaderLinks />}
