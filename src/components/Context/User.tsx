@@ -5,7 +5,7 @@ import React, {
   useState,
 } from "react";
 
-import { User as UserEntity } from "lib/types/github";
+import { User as UserEntity } from "@/types/github";
 
 const UserContext = createContext<UserEntity | undefined>(undefined);
 const SetUserContext = createContext<null | React.Dispatch<

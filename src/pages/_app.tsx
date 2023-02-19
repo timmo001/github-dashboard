@@ -16,7 +16,7 @@ import theme from "@/components/Theme";
 
 import "@fontsource/roboto";
 
-import "@/assets/css/style.css";
+import "@/styles/css/style.css";
 
 declare module "@mui/styles/defaultTheme" {
   interface DefaultTheme extends Theme {}

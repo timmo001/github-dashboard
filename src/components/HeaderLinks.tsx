@@ -6,7 +6,7 @@ import clsx from "clsx";
 
 import { useViewer } from "./Context/Viewer";
 import SetRepository from "./SetRepository";
-import useStyles from "assets/jss/components/headerLinks";
+import useStyles from "@/styles/jss/components/headerLinks";
 
 function HeaderLinks(): ReactElement {
   const [setRepository, setSetRepository] = useState<boolean>(false);
@@ -39,8 +39,7 @@ function HeaderLinks(): ReactElement {
               }}
               onMouseLeave={() => {
                 setHoveringLoginButton(false);
-              }}
-            >
+              }}>
               <span className={classes.listItemText}>
                 {hoveringLoginButton
                   ? "Log out of GitHub"
@@ -57,8 +56,7 @@ function HeaderLinks(): ReactElement {
             <Button
               variant="outlined"
               className={classes.navLink}
-              onClick={handleSetRepository}
-            >
+              onClick={handleSetRepository}>
               <span className={classes.listItemText}>Set Repository</span>
             </Button>
           </ListItem>
@@ -71,8 +69,7 @@ function HeaderLinks(): ReactElement {
             href={{
               pathname: "/",
               query: router.query,
-            }}
-          >
+            }}>
             <Button variant="text" className={classes.navLink}>
               <span className={classes.listItemText}>Dashboard</span>
             </Button>

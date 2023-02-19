@@ -5,7 +5,7 @@ import React, {
   useState,
 } from "react";
 
-import { Viewer as ViewerEntity } from "lib/types/github";
+import { Viewer as ViewerEntity } from "@/types/github";
 
 const ViewerContext = createContext<ViewerEntity | undefined>(undefined);
 const SetViewerContext = createContext<null | React.Dispatch<

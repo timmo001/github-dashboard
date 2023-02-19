@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useMemo, useState } from "react";
+import { ReactElement, useEffect, useMemo, useState } from "react";
 import { GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import {
@@ -31,32 +31,32 @@ import {
 } from "@mdi/js";
 import moment from "moment";
 
-import { AuthenticationType, OAuth2 } from "lib/types/general";
-import { GitHub } from "lib/github";
+import { AuthenticationType, OAuth2 } from "@/types/general";
+import { GitHub } from "@/lib/github";
 import {
   IssueElement,
   RepositoryData,
   UserData,
   ViewerData,
-} from "lib/types/github";
-import { useAuth } from "components/Context/Auth";
-import { useRepository } from "components/Context/Repository";
-import { useUser } from "components/Context/User";
-import { useViewer } from "components/Context/Viewer";
-import graphqlRepository from "lib/graphql/repository.graphql";
-import graphqlUser from "lib/graphql/user.graphql";
-import graphqlViewer from "lib/graphql/viewer.graphql";
-import Layout from "components/Layout";
-import Stat from "components/Stat";
-import useStyles from "assets/jss/components/layout";
+} from "@/types/github";
+import { useAuth } from "@/components/Context/Auth";
+import { useRepository } from "@/components/Context/Repository";
+import { useUser } from "@/components/Context/User";
+import { useViewer } from "@/components/Context/Viewer";
+import graphqlRepository from "@/lib/graphql/repository.graphql";
+import graphqlUser from "@/lib/graphql/user.graphql";
+import graphqlViewer from "@/lib/graphql/viewer.graphql";
+import Layout from "@/components/Layout";
+import Stat from "@/components/Stat";
+import useStyles from "@/styles/jss/components/layout";
 
-interface DashboardProps {
+interface HomeProps {
   clientId: string;
 }
 
 const github = new GitHub();
 
-function Dashboard({ clientId }: DashboardProps): ReactElement {
+export default function Home({ clientId }: HomeProps): ReactElement {
   const [auth, setAuth] = useAuth();
   const [alert, setAlert] = useState<string>();
   const [authenticated, setAuthenticated] = useState<AuthenticationType>(0);
@@ -270,8 +270,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
         container
         direction="row"
         alignContent="space-around"
-        justifyContent="center"
-      >
+        justifyContent="center">
         {alert ? (
           <Grid item xs={11}>
             <Alert severity="error">{alert}</Alert>
@@ -288,8 +287,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
               sx={{ padding: theme.spacing(1), marginBottom: theme.spacing(2) }}
               onClick={() => {
                 router.push(authorizeUrl);
-              }}
-            >
+              }}>
               Authenticate with GitHub
             </Button>
           </Grid>
@@ -302,16 +300,14 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
           sx={{
             padding: theme.spacing(0),
             textAlign: "center",
-          }}
-        >
+          }}>
           {repositoryData ? (
             <>
               <Grid
                 container
                 direction="row"
                 alignContent="space-around"
-                justifyContent="space-around"
-              >
+                justifyContent="space-around">
                 <Stat
                   icon={mdiChatOutline}
                   title="Discussions"
@@ -361,8 +357,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                 direction="row"
                 alignContent="space-around"
                 justifyContent="space-around"
-                sx={{ margin: theme.spacing(2, 0) }}
-              >
+                sx={{ margin: theme.spacing(2, 0) }}>
                 <Grid item sm={12} lg={6} sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap>
                     <Icon
@@ -379,8 +374,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     style={{
                       width: "100%",
                       height: 520,
-                    }}
-                  >
+                    }}>
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={issuesByDay}>
                         <XAxis dataKey="date" />
@@ -416,8 +410,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
                     style={{
                       width: "100%",
                       height: 520,
-                    }}
-                  >
+                    }}>
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={pullRequestsByDay}>
                         <XAxis dataKey="date" />
@@ -443,8 +436,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
             <Grid
               container
               alignContent="space-around"
-              justifyContent="space-around"
-            >
+              justifyContent="space-around">
               <CircularProgress color="primary" />
             </Grid>
           )}
@@ -454,7 +446,7 @@ function Dashboard({ clientId }: DashboardProps): ReactElement {
   );
 }
 
-export const getStaticProps: GetStaticProps<DashboardProps> = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       clientId: process.env.GITHUB_CLIENT_ID,
@@ -462,5 +454,3 @@ export const getStaticProps: GetStaticProps<DashboardProps> = async () => {
     revalidate: 1,
   };
 };
-
-export default Dashboard;

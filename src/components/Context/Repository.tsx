@@ -5,7 +5,7 @@ import React, {
   useState,
 } from "react";
 
-import { Repository as RepositoryEntity } from "lib/types/github";
+import { Repository as RepositoryEntity } from "@/types/github";
 
 const RepositoryContext = createContext<RepositoryEntity | undefined>(
   undefined

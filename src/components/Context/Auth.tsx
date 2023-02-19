@@ -5,7 +5,7 @@ import React, {
   useState,
 } from "react";
 
-import { OAuth2 as AuthEntity } from "lib/types/general";
+import { OAuth2 as AuthEntity } from "@/types/general";
 
 const AuthContext = createContext<AuthEntity | undefined>(undefined);
 const SetAuthContext = createContext<null | React.Dispatch<
