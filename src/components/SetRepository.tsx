@@ -128,6 +128,7 @@ function SetRepository(): ReactElement {
   }
 
   function handleConfirmSetRepository(): void {
+    if (!newRepository) return;
     const nr = {};
     Object.assign(nr, newRepository);
     for (const qk of Object.keys(nr)) {
