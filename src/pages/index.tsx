@@ -75,7 +75,7 @@ export default function Home({ clientId }: HomeProps): ReactElement {
     if (authenticated > AuthenticationType.NotAuthorized) return;
     console.log("Authenticating...");
 
-    let oAuthData: OAuth2;
+    let oAuthData: OAuth2 | null = null;
     try {
       const oauthDataStorage = window.localStorage.getItem("github-oauth-data");
       if (oauthDataStorage) oAuthData = JSON.parse(oauthDataStorage);
@@ -100,7 +100,7 @@ export default function Home({ clientId }: HomeProps): ReactElement {
       return;
     }
 
-    if (code?.length > 0 && state?.length > 0) {
+    if (code && code.length > 0 && state && state.length > 0) {
       setAuthenticated(AuthenticationType.Authenticating);
       console.log("Using code and state:", code, state);
       (async () => {
@@ -141,7 +141,7 @@ export default function Home({ clientId }: HomeProps): ReactElement {
       console.log("Generating authorize URL:", url);
       setAuthorizeUrl(url);
     }
-  }, [clientId, code, state]);
+  }, [authenticated, clientId, code, router, setAuth, state]);
 
   useEffect(() => {
     console.log("Authenticated:", authenticated);
@@ -159,11 +159,13 @@ export default function Home({ clientId }: HomeProps): ReactElement {
       }
       setViewerData(data.viewer);
     })();
-  }, [authenticated]);
+  }, [auth, authenticated, setViewerData]);
 
   useEffect(() => {
     if (authenticated !== AuthenticationType.Authenticated) return;
-    let type: string, owner: string, repository: string;
+    let type: string | null = null,
+      owner: string | null = null,
+      repository: string | null = null;
     const currentRepositoryStr =
       window.localStorage.getItem("currentRepository");
     if (!currentRepositoryStr) return;
@@ -203,7 +205,7 @@ export default function Home({ clientId }: HomeProps): ReactElement {
         }
         setUserData(data.user);
       });
-  }, [authenticated]);
+  }, [authenticated, setRepositoryData, setUserData]);
 
   const daysSince = useMemo<number>(() => {
     const firstDate = moment().subtract(1, "month").startOf("month").toDate();
@@ -215,7 +217,9 @@ export default function Home({ clientId }: HomeProps): ReactElement {
     return daysSince;
   }, []);
 
-  const issuesByDay = useMemo<Array<{ date: string; Issues: number }>>(() => {
+  const issuesByDay = useMemo<
+    Array<{ date: string; Issues: number }> | undefined
+  >(() => {
     if (!daysSince) return undefined;
     if (!repositoryData) return undefined;
     const issues = [];
@@ -237,7 +241,7 @@ export default function Home({ clientId }: HomeProps): ReactElement {
   }, [daysSince, repositoryData]);
 
   const pullRequestsByDay = useMemo<
-    Array<{ date: string; "Pull Requests": number }>
+    Array<{ date: string; "Pull Requests": number }> | undefined
   >(() => {
     if (!daysSince) return undefined;
     if (!repositoryData) return undefined;
