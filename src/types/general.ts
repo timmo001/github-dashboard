@@ -4,11 +4,11 @@ export interface Picker {
 }
 
 export enum Status {
-  NotAuthorized = 0,
-  Authenticating = 1,
-  Authenticated = 2,
-  NotAuthenticated = 3,
-  NoRepository = 4,
+  NotAuthorized = "Not Authorized",
+  Authenticating = "Authenticating",
+  Authenticated = "Authenticated",
+  NotAuthenticated = "Not Authenticated",
+  NoRepository = "No Repository",
 }
 
 export interface OAuth2 {
