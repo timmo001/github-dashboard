@@ -3,9 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   webpack: (config) => {
     config.module.rules.push({
-      test: /\.(graphql|gql)$/,
+      test: /\.(graphql|gql|txt)$/,
       exclude: /node_modules/,
-      loader: "graphql-tag/loader",
+      loader: "raw-loader",
     });
     return config;
   },

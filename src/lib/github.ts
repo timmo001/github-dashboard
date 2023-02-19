@@ -39,6 +39,7 @@ export class GitHub {
     variables?: NodeJS.Dict<any>
   ): Promise<T> {
     if (!this.auth) throw new Error("Not Authenticated");
+    console.log("GraphQL Query:", { query, variables });
     const response = await axios.post<GraphQLResponse<T>>(
       "https://api.github.com/graphql",
       {

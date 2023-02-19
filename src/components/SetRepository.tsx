@@ -81,7 +81,7 @@ function SetRepository(): ReactElement {
       owner: currentRepository?.owner || viewerData?.login,
       repository: currentRepository?.repository || "",
     });
-  }, []);
+  }, [viewerData?.login]);
 
   const getRepositories = useCallback(() => {
     if (!newRepository) return;
