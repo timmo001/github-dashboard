@@ -16,8 +16,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse<unknown>) {
     const data = {
       client_id: process.env.GITHUB_CLIENT_ID,
       client_secret: process.env.GITHUB_CLIENT_SECRET,
-      grant_type: "refresh_token",
-      refresh_token: body.refreshToken,
+      code: body.code,
+      redirect_uri: body.redirectUri,
+      state: body.state,
+      scope: [
+        "public_repo",
+        "read:org",
+        "read:public_key",
+        "read:repo_hook",
+        "read:user",
+        "repo_deployment",
+        "repo:status",
+        "repo",
+        "user",
+        "workflow",
+      ].join(" "),
     };
     console.log("data:", data);
     const response = await axios.post<any>(
@@ -36,7 +49,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<unknown>) {
       response.data
     );
     res.status(200).json(response.data);
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
     res.status(500).json({
       status: 500,

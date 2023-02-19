@@ -1,11 +1,11 @@
 import axios from "axios";
 import crypto from "crypto";
 
-import { GraphQLResponse } from "./types/github";
-import { OAuth2 } from "./types/general";
+import { GraphQLResponse } from "../types/github";
+import { OAuth2 } from "../types/general";
 
 export class GitHub {
-  auth: OAuth2;
+  auth?: OAuth2;
 
   async authenticate(
     baseUrl: string,
