@@ -72,7 +72,7 @@ export default function Home({ clientId }: HomeProps): ReactElement {
     setAlert(undefined);
     setAuthorizeUrl(undefined);
 
-    if (status > Status.NotAuthorized) return;
+    if (status !== Status.NotAuthorized) return;
     console.log("Authenticating...");
 
     let oAuthData: OAuth2 | null = null;
@@ -448,8 +448,10 @@ export default function Home({ clientId }: HomeProps): ReactElement {
                 <Typography variant="h4" noWrap>
                   Please select a repository
                 </Typography>
-              ) : (
+              ) : status !== Status.NotAuthorized ? (
                 <CircularProgress color="primary" />
+              ) : (
+                ""
               )}
             </Grid>
           )}
