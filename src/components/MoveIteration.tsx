@@ -51,9 +51,10 @@ function MoveIteration({
           options={iterationsPicker}
           value={newIteration}
           onChange={(_event, newValue: Picker) => {
-            setNewIteration(
-              iterationsPicker.find((it: Picker) => it.id === newValue.id)
+            const foundValue = iterationsPicker.find(
+              (it: Picker) => it.id === newValue.id
             );
+            if (foundValue) setNewIteration(foundValue);
           }}
           renderInput={(params): JSX.Element => (
             <TextField {...params} label="New Iteration" />
