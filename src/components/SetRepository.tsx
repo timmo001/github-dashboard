@@ -68,7 +68,7 @@ function SetRepository(): ReactElement {
   useEffect(() => {
     const currentRepositoryStr =
       window.localStorage.getItem("currentRepository");
-    let currentRepository: CurrentRepository;
+    let currentRepository: CurrentRepository | null = null;
     if (currentRepositoryStr) {
       try {
         currentRepository = JSON.parse(currentRepositoryStr);
@@ -78,7 +78,7 @@ function SetRepository(): ReactElement {
     }
     setNewRepository({
       type: currentRepository?.type || CurrentRepositoryType.User,
-      owner: currentRepository?.owner || viewerData?.login,
+      owner: currentRepository?.owner || viewerData?.login || "",
       repository: currentRepository?.repository || "",
     });
   }, [viewerData?.login]);
@@ -116,7 +116,7 @@ function SetRepository(): ReactElement {
     [currentStep]
   );
 
-  const repositoriesPicker = useMemo<Array<string>>(() => {
+  const repositoriesPicker = useMemo<Array<string> | undefined>(() => {
     if (!ownerData) return undefined;
     return ownerData.repositories.nodes.map(
       (repository: RepositoryNode) => repository.name
@@ -143,7 +143,8 @@ function SetRepository(): ReactElement {
   }
 
   function handleGoToNextStep(): void {
-    const nr: CurrentRepository = newRepository;
+    const nr: CurrentRepository | undefined = newRepository;
+    if (!nr) return;
     if (steps[currentStepIndex + 1].value === "repository") {
       nr[steps[currentStepIndex + 1].value] = "";
       getRepositories();
