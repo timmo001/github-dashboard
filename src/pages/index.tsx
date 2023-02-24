@@ -277,7 +277,8 @@ export default function Home({ clientId }: HomeProps): ReactElement {
         container
         direction="row"
         alignContent="space-around"
-        justifyContent="center">
+        justifyContent="center"
+      >
         {alert ? (
           <Grid item xs={11}>
             <Alert severity="error">{alert}</Alert>
@@ -294,7 +295,8 @@ export default function Home({ clientId }: HomeProps): ReactElement {
               sx={{ padding: theme.spacing(1), marginBottom: theme.spacing(2) }}
               onClick={() => {
                 router.push(authorizeUrl);
-              }}>
+              }}
+            >
               Authenticate with GitHub
             </Button>
           </Grid>
@@ -307,14 +309,16 @@ export default function Home({ clientId }: HomeProps): ReactElement {
           sx={{
             padding: theme.spacing(0),
             textAlign: "center",
-          }}>
+          }}
+        >
           {repositoryData ? (
             <>
               <Grid
                 container
                 direction="row"
                 alignContent="space-around"
-                justifyContent="space-around">
+                justifyContent="space-around"
+              >
                 <Stat
                   icon={mdiChatOutline}
                   title="Discussions"
@@ -364,7 +368,8 @@ export default function Home({ clientId }: HomeProps): ReactElement {
                 direction="row"
                 alignContent="space-around"
                 justifyContent="space-around"
-                sx={{ margin: theme.spacing(2, 0) }}>
+                sx={{ margin: theme.spacing(2, 0) }}
+              >
                 <Grid item sm={12} lg={6} sx={{ padding: theme.spacing(1, 2) }}>
                   <Typography variant="h4" noWrap>
                     <Icon
@@ -381,7 +386,8 @@ export default function Home({ clientId }: HomeProps): ReactElement {
                     style={{
                       width: "100%",
                       height: 520,
-                    }}>
+                    }}
+                  >
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={issuesByDay}>
                         <XAxis dataKey="date" />
@@ -417,7 +423,8 @@ export default function Home({ clientId }: HomeProps): ReactElement {
                     style={{
                       width: "100%",
                       height: 520,
-                    }}>
+                    }}
+                  >
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={pullRequestsByDay}>
                         <XAxis dataKey="date" />
@@ -443,7 +450,8 @@ export default function Home({ clientId }: HomeProps): ReactElement {
             <Grid
               container
               alignContent="space-around"
-              justifyContent="space-around">
+              justifyContent="space-around"
+            >
               {status === Status.NoRepository ? (
                 <Typography variant="h4" noWrap>
                   Please select a repository

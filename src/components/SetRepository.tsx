@@ -158,7 +158,8 @@ function SetRepository(): ReactElement {
       maxWidth="md"
       open
       scroll="body"
-      onClose={handleCloseSetRepository}>
+      onClose={handleCloseSetRepository}
+    >
       <DialogTitle>Change Repository</DialogTitle>
       {newRepository ? (
         <>
@@ -169,7 +170,8 @@ function SetRepository(): ReactElement {
                 xs={5}
                 container
                 alignContent="center"
-                justifyContent="flex-end">
+                justifyContent="flex-end"
+              >
                 <Timeline position="alternate">
                   {steps.map((step: Step, key: number) => (
                     <TimelineItem key={key}>
@@ -193,7 +195,8 @@ function SetRepository(): ReactElement {
                 xs
                 container
                 alignContent="center"
-                justifyContent="center">
+                justifyContent="center"
+              >
                 {currentStep.label === "Type" ? (
                   <Autocomplete
                     disableClearable
@@ -271,7 +274,8 @@ function SetRepository(): ReactElement {
         <Grid
           container
           alignContent="space-around"
-          justifyContent="space-around">
+          justifyContent="space-around"
+        >
           <CircularProgress color="primary" />
         </Grid>
       )}
