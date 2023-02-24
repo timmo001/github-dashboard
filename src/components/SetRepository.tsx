@@ -92,7 +92,7 @@ function SetRepository(): ReactElement {
     console.log({ type, owner });
     setOwnerData(undefined);
 
-    if (type === "Organization") {
+    if (type === CurrentRepositoryType.Organization) {
       github
         .graphQL<OrganizationData>(graphqlOrganization, {
           organization: owner,
@@ -100,7 +100,7 @@ function SetRepository(): ReactElement {
         .then(({ organization }) => {
           setOwnerData(organization);
         });
-    } else if (type === "User") {
+    } else if (type === CurrentRepositoryType.User) {
       github
         .graphQL<UserData>(graphqlUser, {
           user: owner,
@@ -129,13 +129,10 @@ function SetRepository(): ReactElement {
 
   function handleConfirmSetRepository(): void {
     if (!newRepository) return;
-    const nr = {};
-    Object.assign(nr, newRepository);
-    for (const qk of Object.keys(nr)) {
-      if (!nr[qk] || nr[qk] === "") delete nr[qk];
-    }
-
-    window.localStorage.setItem("currentRepository", JSON.stringify(nr));
+    window.localStorage.setItem(
+      "currentRepository",
+      JSON.stringify(newRepository)
+    );
     handleCloseSetRepository();
   }
 
@@ -144,14 +141,10 @@ function SetRepository(): ReactElement {
   }
 
   function handleGoToNextStep(): void {
-    const nr: CurrentRepository | undefined = newRepository;
-    if (!nr) return;
-    if (steps[currentStepIndex + 1].value === "repository") {
-      nr[steps[currentStepIndex + 1].value] = "";
+    if (newRepository && currentStep.label === "Owner") {
+      setNewRepository({ ...newRepository, repository: "" });
       getRepositories();
     }
-
-    setNewRepository(nr);
     setCurrentStep(steps[currentStepIndex + 1]);
   }
 
@@ -205,8 +198,11 @@ function SetRepository(): ReactElement {
                   <Autocomplete
                     disableClearable
                     fullWidth
-                    options={["Organization", "User"]}
-                    value={newRepository[currentStep.value]}
+                    options={[
+                      CurrentRepositoryType.Organization,
+                      CurrentRepositoryType.User,
+                    ]}
+                    value={newRepository.type}
                     onChange={(_event, newValue: string) => {
                       setNewRepository({
                         ...newRepository,
@@ -217,12 +213,25 @@ function SetRepository(): ReactElement {
                       <TextField {...params} label={currentStep.label} />
                     )}
                   />
+                ) : currentStep.label === "Owner" ? (
+                  <TextField
+                    fullWidth
+                    margin="dense"
+                    label={currentStep.label}
+                    value={newRepository.owner}
+                    onChange={(event: ChangeEvent<HTMLInputElement>): void => {
+                      setNewRepository({
+                        ...newRepository,
+                        [currentStep.value]: event.target.value,
+                      });
+                    }}
+                  />
                 ) : currentStep.label === "Repository" && repositoriesPicker ? (
                   <Autocomplete
                     disableClearable
                     fullWidth
                     options={repositoriesPicker}
-                    value={newRepository[currentStep.value]}
+                    value={newRepository.repository}
                     onChange={(_event, newValue: string) => {
                       setNewRepository({
                         ...newRepository,
@@ -234,18 +243,7 @@ function SetRepository(): ReactElement {
                     )}
                   />
                 ) : (
-                  <TextField
-                    fullWidth
-                    margin="dense"
-                    label={currentStep.label}
-                    value={newRepository[currentStep.value]}
-                    onChange={(event: ChangeEvent<HTMLInputElement>): void => {
-                      setNewRepository({
-                        ...newRepository,
-                        [currentStep.value]: event.target.value,
-                      });
-                    }}
-                  />
+                  <CircularProgress color="primary" />
                 )}
               </Grid>
             </Grid>
